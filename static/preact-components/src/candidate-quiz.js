@@ -9,7 +9,7 @@ const CandidateQuiz = () => {
 
   useEffect(() => {
     // Fetch questions from the API
-    fetch('https://d3je6q80rdriuv.cloudfront.net/questions.json')
+    fetch('https://9qfvneuspu.us-east-1.awsapprunner.com/questions')
       .then((response) => response.json())
       .then((data) => {
         setQuestions(data);
@@ -34,17 +34,22 @@ const CandidateQuiz = () => {
   const handleNextQuestion = () => {
     setSelectedCandidate(null);
     setCorrectCandidate(null);
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+
+    if (currentQuestionIndex + 1 < questions.length) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      // If it's the last question, reset the quiz
+      setCurrentQuestionIndex(0);
+    }
   };
-  
 
   return html`
     <div class="container mt-5">
       ${questions.length > 0 ? (
         html`
-          <h1 class="mb-4">Guess the Candidate</h1>
+        <h5 class="section-title h1">Guess the candidate from the description:</h5>
           <div class="jumbotron">
-            <p>${currentQuestion.info}</p>
+            <p class="section-title h2">${currentQuestion.info}</p>
           </div>
           <div class="row">
             ${currentQuestion.candidates.map((candidate) => html`
@@ -88,7 +93,7 @@ const CandidateQuiz = () => {
               ${
                 currentQuestionIndex + 1 < questions.length
                   ? 'Next Question'
-                  : 'View Candidates'
+                  : 'Try Quiz Again'
               }
             </button>
           ` : ''}

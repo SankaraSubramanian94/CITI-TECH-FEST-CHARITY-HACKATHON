@@ -1,0 +1,76 @@
+[
+    {
+      "id": 1,
+      "info": "This candidate's policy is aimed at reducing income inequality and expanding educational opportunities for underprivileged communities.",
+      "candidates": [
+        {
+          "id": 1,
+          "name": "Maya Patel",
+          "imageUrl": "../static/images/MayaPatel.jpg",
+          "isCorrect": true
+        },
+        {
+          "id": 2,
+          "name": "Olivia Bennett",
+          "imageUrl": "../static/images/OliviaBennett.jpg",
+          "isCorrect": false
+        },
+        {
+          "id": 3,
+          "name": "Samuel Ramirez",
+          "imageUrl": "../static/images/SamuelRamirez.jpg",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+        "id": 1,
+        "info": "This candidate served as the mayor of a major city before becoming a governor.",
+        "candidates": [
+          {
+            "id": 1,
+            "name": "Maya Patel",
+            "imageUrl": "../static/images/MayaPatel.jpg",
+            "isCorrect": false
+          },
+          {
+            "id": 2,
+            "name": "Olivia Bennett",
+            "imageUrl": "../static/images/OliviaBennett.jpg",
+            "isCorrect": false
+          },
+          {
+            "id": 3,
+            "name": "Samuel Ramirez",
+            "imageUrl": "../static/images/SamuelRamirez.jpg",
+            "isCorrect": true
+          }
+        ]
+    },
+    {
+        "id": 1,
+        "info": "This candidate's policy proposals include aggressive climate action plans, renewable energy investments, and strict environmental regulations to combat pollution",
+        "candidates": [
+          {
+            "id": 1,
+            "name": "Maya Patel",
+            "imageUrl": "../static/images/MayaPatel.jpg",
+            "isCorrect": false
+          },
+          {
+            "id": 2,
+            "name": "Olivia Bennett",
+            "imageUrl": "../static/images/OliviaBennett.jpg",
+            "isCorrect": true
+          },
+          {
+            "id": 3,
+            "name": "Samuel Ramirez",
+            "imageUrl": "../static/images/SamuelRamirez.jpg",
+            "isCorrect": false
+          }
+        ]
+    }
+]
+
+  

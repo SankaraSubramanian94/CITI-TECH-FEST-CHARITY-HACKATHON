@@ -168,7 +168,7 @@
 
     p(() => {
       // Fetch questions from the API
-      fetch('https://d3je6q80rdriuv.cloudfront.net/questions.json')
+      fetch('https://9qfvneuspu.us-east-1.awsapprunner.com/questions')
         .then((response) => response.json())
         .then((data) => {
           setQuestions(data);
@@ -193,17 +193,22 @@
     const handleNextQuestion = () => {
       setSelectedCandidate(null);
       setCorrectCandidate(null);
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+
+      if (currentQuestionIndex + 1 < questions.length) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      } else {
+        // If it's the last question, reset the quiz
+        setCurrentQuestionIndex(0);
+      }
     };
-    
 
     return m$1`
     <div class="container mt-5">
       ${questions.length > 0 ? (
         m$1`
-          <h1 class="mb-4">Guess the Candidate</h1>
+        <h5 class="section-title h1">Guess the candidate from the description:</h5>
           <div class="jumbotron">
-            <p>${currentQuestion.info}</p>
+            <p class="section-title h2">${currentQuestion.info}</p>
           </div>
           <div class="row">
             ${currentQuestion.candidates.map((candidate) => m$1`
@@ -247,7 +252,7 @@
               ${
                 currentQuestionIndex + 1 < questions.length
                   ? 'Next Question'
-                  : 'View Candidates'
+                  : 'Try Quiz Again'
               }
             </button>
           ` : ''}
@@ -257,6 +262,41 @@
       )}
     </div>
   `;
+  };
+
+  const LikeCandidate = (props) => {
+    const [liked, setLiked] = h(false);
+
+    async function handleLike() {
+      console.log("liked");
+      if (!liked) {
+        try {
+          console.log(`https://cxka1yt3tj.execute-api.us-east-1.amazonaws.com/test/vote?userId=${props.userId}&candidateId=${props.candidateId}`);
+          const response = await fetch(
+            `https://cxka1yt3tj.execute-api.us-east-1.amazonaws.com/test/vote?userId=${props.userId}&candidateId=${props.candidateId}`,
+            {
+              method: 'POST',
+            }
+          );
+          const data = await response.json();
+          setLiked(true); // Set liked to true when the PUT request is successful
+          const elementsToDisable = document.querySelectorAll('.vote-button.heart-button');
+          elementsToDisable.forEach((element) => {
+            element.disabled = true;
+            element.style.backgroundColor = 'grey';
+          });
+        } catch (error) {
+          // Handle errors if needed
+          console.log(error);
+        }
+      }
+    }
+
+    if (liked) {
+      return m$1`<button class="vote-button"><i class="fa fa-heart"></i>You Liked this candidate</button>`
+    } else {
+      return m$1`<button class="vote-button heart-button" onClick=${handleLike}><i class="fa fa-heart"></i></button>`
+    }
   };
 
   const voteReadyChecklist = document.getElementById('vote-ready-checklist');
@@ -273,6 +313,16 @@
     D(m$1`
     <${CandidateQuiz} />
   `, candidateQuiz);
+  }
+
+  const likeCandidatesButtons = document.getElementsByClassName('like-button');
+  if (likeCandidatesButtons) {
+    for (const btn of likeCandidatesButtons){
+      console.log(btn);
+      D(m$1`
+      <${LikeCandidate} userId=${btn.dataset.userId} candidateId=${btn.dataset.candidateId} />
+    `, btn);
+    }
   }
 
 })();

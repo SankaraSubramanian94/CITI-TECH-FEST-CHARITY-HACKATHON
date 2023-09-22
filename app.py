@@ -1,6 +1,7 @@
-from flask import Flask, jsonify, redirect, session, url_for, render_template
+from flask import Flask, jsonify, redirect, session, url_for, render_template, jsonify
 import os
 import requests
+import json
 from flask_cognito_lib import CognitoAuth
 from flask_cognito_lib.decorators import (
     auth_required,
@@ -36,7 +37,27 @@ def fetch_and_store_user_data(endpoint_url):
         print(f"Error: {str(e)}")
         return None
 
+@app.route('/questions', methods=['GET'])
+def get_questions():
+    try:
+        # Open and read the 'questions.json' file
+        with open('questions.json', 'r') as file:
+            questions_data = file.read()
+        
+        # Parse the JSON data
+        questions_json = json.loads(questions_data)
+        
+        return jsonify(questions_json), 200
+    except FileNotFoundError:
+        return "Questions file not found", 404
+    except Exception as e:
+        return str(e), 500
 
+@app.route('/testing', methods=['GET'])
+def test():
+    session['has_voted'] = False
+    return render_template("test.html")
+    
 @app.route("/")
 @cognito_login
 def login():
@@ -79,7 +100,7 @@ def home():
     # an `@app.error_handler(AuthorisationRequiredError)
     # If their auth is valid, the current session will be shown including
     # their claims and user_info extracted from the Cognito tokens.
-    if "userId" not in session:
+    if True:
         user_id =  session['user_info']['cognito:username']
         endpoint_url = f"https://cxka1yt3tj.execute-api.us-east-1.amazonaws.com/test/user?userId={user_id}"
         fetch_and_store_user_data(endpoint_url)
